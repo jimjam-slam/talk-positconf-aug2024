@@ -1,0 +1,8 @@
+# don't version control commercially licensed backgrounds
+/assets/backgrounds
+/.quarto/
+
+/.luarc.json
+
+/node_modules
+/_site

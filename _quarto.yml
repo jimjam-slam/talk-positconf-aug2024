@@ -1,0 +1,5 @@
+project:
+  type: sverto
+  resources:
+    - "time-series/*.csv"
+    - "style/fonts/*.woff2"

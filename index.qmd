@@ -1,0 +1,1273 @@
+---
+knitr:
+  opts_chunk: 
+    dev.args:
+      bg: transparent
+format:
+  revealjs: 
+    theme: [default, style/style.scss]
+    highlight-style: github-dark
+    width: 1400
+    # background-transition: fade
+    resources:
+      - "/assets/naturalearth-land-110m.geojson"
+      - "/assets/backgrounds/*.mp4"
+      - "/assets/backgrounds/*.jpg"
+      - "/assets/*.svg"
+      - "/assets/*.png"
+      - "time-series/*.csv"
+code-annotation: select
+filters:
+  - sverto
+sverto:
+  use:
+    - TimeSeriesChart.svelte
+---
+
+# Your journey<br>[from data science to animated web graphics]{style="font-size: 65%"} {#section-silver
+  background-video="/assets/backgrounds/WonderfulWizardWaterfall_Animated_Day.mp4"
+  background-opacity="0.8"
+  background-color="#223344"
+  background-video-loop="true"}
+ 
+:::{.title-content .small}
+<br> 
+**JAMES GOLDIE**  
+DATA AND DIGITAL STORYTELLING LEAD, 360INFO
+:::
+
+
+## Hello! {
+  background-image="/assets/backgrounds/WonderfulWizardWaterfall_Original_Day.jpg"
+  background-opacity="0.99"
+  background-color="#555566"}
+
+:::: {.columns}
+::: {.column}
+[![](/assets/360logo.svg){alt="360info"}](https://360info.org)
+:::
+::: {.column}
+
+<br>
+
+I'm James, a **data journalist** at [**360info**](https://360info.org)
+
+:::{.small style="margin-left: 0.67em;"}
+We deliver verified and reliable information to as many publishing, broadcasting and civic society outlets as possible
+
+I lead our data efforts, publishing **open graphics and datasets** under Creative Commons
+
+I also used to be a climate + health researcher!
+:::
+
+:::
+::::
+
+
+
+## New tools can be scary! {
+  background-image="/assets/backgrounds/WonderfulWizardWaterfall_Original_Day.jpg"
+  background-opacity="0.99"
+  background-color="#555566"}
+
+All of these have felt scary to me at some point
+
+:::{.small}
+Adding a stylesheet to a Quarto or RMarkdown
+
+Adding JavaScript to a Shiny app
+
+Using D3.js to make a graphic
+
+Bundling JavaScript dependencies
+:::
+
+## Why I love Quarto {
+  background-image="/assets/backgrounds/WonderfulWizardWaterfall_Original_Day.jpg"
+  background-opacity="0.99"
+  background-color="#555566"}
+
+I've gone research + data science -> communication -> data journalism
+
+I've looked for tools to help bridge my existing technical skills
+
+Quarto is a fantastic bridge 
+
+Today I want to bring you on this journey
+
+# First steps<br>[Trying out OJS and Observable Plot]{style="font-size: 65%"} {#section-cream
+  background-video="/assets/backgrounds/VillageBlacksmith_Animated_Day.mp4"
+  background-opacity="0.99"
+  background-color="#2B4734"
+  }
+
+## You can use OJS right now! {
+  background-image="/assets/backgrounds/VillageBlacksmith_Original_Day.jpg"
+  background-opacity="0.99"
+  background-color="#2B4734"}
+
+No need to download, add or configure anything
+
+If you have Quarto, you're ready to go!
+
+## Swap Observable Plot for ggplot2 {
+  background-image="/assets/backgrounds/VillageBlacksmith_Original_Day.jpg"
+  background-opacity="0.99"
+  background-color="#2B4734"}
+
+::::{.columns}
+
+:::{.column}
+
+Let's say we're plotting some basic population data:
+
+:::
+
+:::{.column}
+
+```{ojs}
+//| label: sample-data-ojs
+//| classes: has-table
+Inputs.table(transpose(aus_pops), {
+  height: 600,
+  width: 600,
+  style: {
+    color: "red"
+  }
+})
+```
+
+:::
+
+::::
+ 
+## Swap Observable Plot for ggplot2 {
+  background-image="/assets/backgrounds/VillageBlacksmith_Original_Day.jpg"
+  background-opacity="0.99"
+  background-color="#2B4734"}
+
+```{r}
+#| label: sample-data-r
+#| output: false
+library(tibble)
+aus_pops <- tribble(
+  ~ city, ~ pop,
+  "Melbourne", 5.078,
+  "Sydney", 5.312,
+  "Brisbane", 2.28,
+  "Adelaide", 1.306,
+  "Perth", 1.985,
+  "Canberra", 0.395,
+  "Hobart", 0.206,
+  "Darwin", 0.132)
+ojs_define(aus_pops)
+```
+
+Here's our plot in R...
+
+::::{.columns}
+
+:::{.column .small}
+
+```{r}
+#| label: replace-plot-r
+#| output: false
+#| echo: true
+library(ggplot2)
+ggplot(aus_pops) +
+  aes(x = city, y = pop) +
+  geom_col(fill = "#222222ee") +
+  theme_minimal() +
+  theme(
+    plot.background  = element_blank(),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    plot.title       = element_text(colour = "white"),
+    axis.text        = element_text(colour = "white"),
+    axis.title       = element_text(colour = "white")) +
+  labs(title = "Population in millions")
+```
+
+:::
+
+:::{.column}
+
+```{r}
+#| label: replace-plot-r2
+#| output: true
+#| echo: false
+library(ggplot2)
+ggplot(aus_pops) +
+  aes(x = city, y = pop) +
+  geom_col(fill = "#222222ee") +
+  theme_minimal(base_size = 20) +
+  theme(
+    plot.background = element_blank(),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(colour = "white"),
+    axis.text = element_text(colour = "white"),
+    axis.title = element_text(colour = "white")) +
+  labs(
+    title = "Population in millions")
+```
+
+:::
+
+::::
+
+## Swap Observable Plot for ggplot2 {
+  background-image="/assets/backgrounds/VillageBlacksmith_Original_Day.jpg"
+  background-opacity="0.99"
+  background-color="#2B4734"}
+
+... and here it is in Observable Plot:
+
+::::{.columns}
+
+:::{.column .small}
+
+```js
+md`Population in millions`
+
+Plot.plot({
+  marks: [
+    Plot.barY(aus_pops, {
+      x: "city",
+      y: "pop",
+      fill: "#222222ee"
+    })
+  ],
+  style: {
+    fontSize: 16
+  },
+  marginBottom: 45,
+  title: "Population in millions"
+})
+```
+
+:::
+
+:::{.column}
+
+
+```{ojs}
+md`Population in millions`
+
+Plot.plot({
+  marks: [
+    Plot.barY(transpose(aus_pops), {
+      x: "city",
+      y: "pop",
+      fill: "#222222ee"
+    })
+  ],
+  style: {
+    fontSize: 16
+  },
+  marginBottom: 45
+})
+```
+
+:::
+::::
+
+## Getting data into OJS {
+  background-image="/assets/backgrounds/VillageBlacksmith_Original_Day.jpg"
+  background-opacity="0.99"
+  background-color="#2B4734"}
+
+How do we load our data in?
+
+::::{.columns}
+:::{.column}
+
+If it's already in R or Python, we can just use `ojs_define()`:
+
+```r
+ojs_define(aus_pops)
+```
+
+:::
+:::{.column}
+
+Or we can save the data to disk in R/Python...
+
+```r
+write_csv(aus_pops, "aus_pops.csv")
+```
+
+... and read it back in:
+
+```js
+aus_pops =
+  FileAttachment("aus_pops.csv")
+  .csv({ typed: true })
+```
+
+:::
+::::
+
+## But why? {
+  background-image="/assets/backgrounds/VillageBlacksmith_Original_Day.jpg"
+  background-opacity="0.99"
+  background-color="#2B4734"}
+
+::::{.columns}
+:::{.column}
+
+We can make more than just static plots!
+
+Observable Plot has built-in **tooltips**, and we can make individual elements accessible too:
+
+```{ojs}
+//| echo: true
+//| output: false
+md`Population in millions`
+
+Plot.plot({
+  marks: [
+    Plot.barY(transpose(aus_pops), {
+      x: "city",
+      y: "pop",
+      fill: "#222222ee",
+      ariaLabel: d => d.city + ": " + d.pop + " million people"
+    }),
+    Plot.tip(transpose(aus_pops), Plot.pointerX({
+      x: "city",
+      y: "pop",
+      fill: "#333333",
+      ariaHidden: true
+    })),
+  ],
+  style: {
+    fontSize: 16
+  },
+  marginBottom: 45
+})
+```
+
+:::
+:::{.column}
+
+```{ojs}
+md`Population in millions`
+
+barPlot = Plot.plot({
+  marks: [
+    Plot.barY(transpose(aus_pops), {
+      x: "city",
+      y: "pop",
+      fill: "#222222ee",
+      ariaLabel: d => d.city + ": " + d.pop + " million people"
+    }),
+    Plot.tip(transpose(aus_pops), Plot.pointerX({
+      x: "city",
+      y: "pop",
+      fill: "#333333",
+      ariaHidden: true
+    })),
+  ],
+  style: {
+    fontSize: 16
+  },
+  marginBottom: 45
+})
+```
+
+:::
+::::
+
+         
+# Levelling up<br>[Simulating animation and conditional content]{style="font-size: 65%"} {
+  background-video="/assets/backgrounds/MountaintopObservatory_Animated_Day.mp4"
+  background-opacity="0.99"
+  background-color="#888888"}
+
+## Animating a map {
+  background-image="/assets/backgrounds/MountaintopObservatory_Natural_Day.jpg"
+  background-opacity="0.69"
+  background-color="#cccccc"}
+
+:::: {.columns}
+::: {.column .small width="50%"}
+```{ojs}
+//| label: cities
+cities = [
+  { name: "Brisbane",  lat: -27.467778, lon: 153.028056 },
+  { name: "New Delhi", lat: 28.613889,  lon: 77.208889 },
+  { name: "Singapore", lat: 1.283333,   lon: 103.833333 },
+  { name: "Istanbul",  lat: 41.013611,  lon: 28.955 },
+  { name: "Paris",     lat: 48.856667,  lon: 2.352222 },
+  { name: "Nairobi",   lat: -1.286389,  lon: 36.817222 },
+  { name: "São Paulo", lat: -23.55,     lon: -46.633333 },
+  { name: "Montreal",  lat: 45.508889,  lon: -73.554167 },
+  { name: "Houston",   lat: 29.762778,  lon: -95.383056 },
+  { name: "Vancouver", lat: 49.260833,  lon: -123.113889 },
+  { name: "Honolulu",  lat: 21.306944,  lom: -157.858333 }
+]
+```
+
+```{ojs}
+//| label: download-land
+world =
+  FileAttachment("/assets/naturalearth-land-110m.geojson")
+  .json()
+```
+
+```js
+Plot.plot({
+  marks: [
+    Plot.geo(world, {
+      fill: "#222222"
+    }),
+    Plot.dot(cities, {
+      x: "lon",
+      y: "lat",
+      fill: "#eb343d",
+      stroke: "white",
+      strokeWidth: 5,
+      paintOrder: "stroke",
+      size: 6
+    }),
+    Plot.text(cities, {
+      x: d => d.lon + 2,
+      y: d => d.lat + 2,
+      text: "name",
+      fill: "#eb343d",
+      stroke: "white",
+      strokeWidth: 5,
+      paintOrder: "stroke",
+      fontSize: 18,
+      textAnchor: "start"
+    }),
+  ]
+})
+```
+:::
+
+::: {.column .small width="5%"}
+:::
+
+::: {.column .small width="45%"}
+```{ojs}
+//| label: map
+Plot.plot({
+  marks: [
+    Plot.geo(world, {
+      fill: "#222222"
+    }),
+    Plot.dot(cities, {
+      x: "lon",
+      y: "lat",
+      fill: "#eb343d",
+      stroke: "white",
+      strokeWidth: 5,
+      paintOrder: "stroke",
+      size: 6
+    }),
+    Plot.text(cities, {
+      x: d => d.lon + 2,
+      y: d => d.lat + 2,
+      text: "name",
+      fill: "#eb343d",
+      stroke: "white",
+      strokeWidth: 5,
+      paintOrder: "stroke",
+      fontSize: 18,
+      textAnchor: "start"
+    }),
+  ]
+})
+```
+:::
+::::
+
+ 
+## What about a globe? {
+  background-image="/assets/backgrounds/MountaintopObservatory_Natural_Day.jpg"
+  background-opacity="0.69"
+  background-color="#cccccc"}
+
+:::: {.columns}
+::: {.column .small width="50%"}
+
+We can add a projection to make this a globe
+
+```js
+Plot.plot({
+  marks: [
+    Plot.graticule(),
+    Plot.sphere(),
+    /* previous marks */
+  ],
+  projection: {
+    type: "orthographic",
+    rotate: [50, -10]
+  }
+})
+```
+:::
+
+::: {.column .small width="5%"}
+:::
+
+::: {.column .small width="45%"}
+```{ojs}
+//| label: map-sphere
+Plot.plot({
+  marks: [
+    Plot.graticule(),
+    Plot.sphere(),
+    Plot.geo(world, {
+      fill: "#222222"
+    }),
+    Plot.dot(cities, {
+      x: "lon",
+      y: "lat",
+      fill: "#eb343d",
+      stroke: "white",
+      strokeWidth: 5,
+      paintOrder: "stroke",
+      size: 6
+    }),
+    Plot.text(cities, {
+      x: d => d.lon + 2,
+      y: d => d.lat + 2,
+      text: "name",
+      fill: "#eb343d",
+      stroke: "white",
+      strokeWidth: 5,
+      paintOrder: "stroke",
+      fontSize: 18,
+      textAnchor: "start"
+    }),
+  ],
+  projection: {
+    type: "orthographic",
+    rotate: [50, -10]
+  }
+})
+```
+:::
+::::
+
+## What about an animated globe? {
+  background-image="/assets/backgrounds/MountaintopObservatory_Natural_Day.jpg"
+  background-opacity="0.69"
+  background-color="#cccccc"}
+
+::: {.columns}
+::: {.column .small width="50%"}
+OJS is **reactive**  
+[If your plot includes something that changes, your plot will change too!]{.small}
+
+```{ojs}
+//| echo: true
+now
+```
+
+Let's use this make an `angle`:
+
+```{ojs}
+//| echo: true
+angle = (now / 40) % 360 - 180
+angle
+```
+
+Then replace your plot's rotation:
+
+```js
+projection: {
+  type: "orthographic",
+  // `angle` is changing now!
+  rotate: [angle, -10]
+}
+```
+
+:::
+::: {.column width="5%"}
+:::
+::: {.column width="45%"}
+```{ojs}
+//| label: map-sphere-animated
+Plot.plot({
+  marks: [
+    Plot.graticule(),
+    Plot.sphere(),
+    Plot.geo(world, {
+      fill: "#222222"
+    }),
+    Plot.dot(cities, {
+      x: "lon",
+      y: "lat",
+      fill: "#eb343d",
+      stroke: "white",
+      strokeWidth: 5,
+      paintOrder: "stroke",
+      size: 6
+    }),
+    Plot.text(cities, {
+      x: d => d.lon + 2,
+      y: d => d.lat + 2,
+      text: "name",
+      fill: "#eb343d",
+      stroke: "white",
+      strokeWidth: 5,
+      paintOrder: "stroke",
+      fontSize: 18,
+      textAnchor: "start"
+    }),
+  ],
+  projection: {
+    type: "orthographic",
+    rotate: [angle, -10]
+  }
+})
+```
+:::
+::: 
+
+
+## You can animate with scrolling too! {
+  background-image="/assets/backgrounds/MountaintopObservatory_Natural_Day.jpg"
+  background-opacity="0.69"
+  background-color="#cccccc"}
+
+My colleague **Andrew Bray** presented **Closeread** yesterday
+
+Closeread lets you make scrollytelling docs with Quarto!
+
+You can use `crProgress` instead of `now` to **animate on scroll**
+
+## Conditional content {
+  background-image="/assets/backgrounds/MountaintopObservatory_Natural_Day.jpg"
+  background-opacity="0.69"
+  background-color="#cccccc"}
+
+Sometimes it's nice to show **different things in different circumstances**
+
+::: {.columns .small}
+::: {.column width="33%"}
+In R:
+
+```r
+ifelse(condition,
+  trueThing,
+  falseThing)
+```
+:::
+::: {.column width="33%"}
+In Python:
+
+```python
+trueThing \
+  if condition \
+  else falseThing
+```
+:::
+::: {.column width="33%"}
+**In OJS:**
+
+```js
+condition ?
+  trueThing :
+  falseThing
+```
+
+But in OJS, this is **reactive!** It re-runs every time the condition changes.
+:::
+:::
+
+
+## You could use it for slides... {
+  background-image="/assets/backgrounds/MountaintopObservatory_Natural_Day.jpg"
+  background-opacity="0.69"
+  background-color="#cccccc"}
+
+:::{.small}
+Here's a simple timer:
+```{ojs}
+//| echo: true
+// trafficLight = Math.floor((now / 3000) % 2)
+trafficLight = {
+  let i = 0;
+  while (true) {
+    yield Promises.tick(3000, ++i % 2)
+  }
+}
+trafficLight
+```
+:::
+
+:::: {.columns .small}
+
+::: {.column width="30%"}
+Draw text...
+
+```{ojs}
+//| label: traffic-statements
+//| echo: true
+trafficLight ?
+  md`Go for it!` :
+  md`Waaait a minute`
+```
+:::
+
+::: {.column width="30%"}
+
+... or graphics...
+
+```{ojs}
+//| label: traffic-graphics
+//| echo: true
+trafficLight ?
+  md`![](/assets/positconf-a.png)` :
+  md`![](/assets/positconf-b.png)`
+```
+:::
+
+::: {.column width="40%"}
+... or a drawing!
+
+```{ojs}
+//| label: traffic-lights
+//| echo: true
+svg`<svg style="margin-top:20px">
+  <circle cx="20" cy="20" r="20"
+    fill="${
+      trafficLight  ? "#111111" : "orangered"
+    }">
+  </circle>
+  <circle cx="70" cy="20" r="20"
+    fill="${
+      trafficLight ? "limegreen" : "#111111"
+    }">
+  </circle>
+</svg>`
+```
+:::
+
+::::
+
+ 
+
+## ... to handle statistics... {
+  background-image="/assets/backgrounds/MountaintopObservatory_Natural_Day.jpg"
+  background-opacity="0.69"
+  background-color="#cccccc"}
+
+::: {.columns}
+::: {.column .has-table width="35%"}
+
+```{ojs}
+viewof selectedCities = Inputs.table(transpose(aus_pops), {
+  required: false
+})
+```
+:::
+::: {.column width="65%"}
+
+```js
+selectedCities.length > 2 ?
+  somePlot :
+  someOtherThing
+```
+ 
+```{ojs}
+selectedCities.length > 2 ?
+  Plot.plot({
+    marks: [
+      Plot.barY(selectedCities, {
+        x: "city",
+        y: "pop",
+        fill: "#222222ee",
+        ariaLabel: d => d.city + ": " + d.pop + " million people"
+      }),
+      Plot.tip(transpose(aus_pops), Plot.pointerX({
+        x: "city",
+        y: "pop",
+        fill: "#333333",
+        ariaHidden: true
+      })),
+    ],
+    style: {
+      fontSize: 16
+    },
+    marginBottom: 45
+  }) :
+  md`╳ Not enough cities selected`
+```
+
+:::
+:::
+
+## ...or to make responsive graphics {
+  background-image="/assets/backgrounds/MountaintopObservatory_Natural_Day.jpg"
+  background-opacity="0.69"
+  background-color="#cccccc"}
+
+Try resizing this window!
+
+```{ojs}
+//| echo: true
+md`Window width is ${width} pixels`
+```
+
+```{ojs}
+//| output: false
+vertBarPlot = Plot.plot({
+  marks: [
+    Plot.barX(transpose(aus_pops), {
+      x: "pop",
+      y: "city",
+      fill: "#222222ee",
+      ariaLabel: d => d.city + ": " + d.pop + " million people"
+    }),
+    Plot.tip(transpose(aus_pops), Plot.pointerY({
+      x: "pop",
+      y: "city",
+      fill: "#333333",
+      ariaHidden: true
+    })),
+  ],
+  style: {
+    fontSize: 32
+  },
+  marginLeft: 160,
+  marginBottom: 80,
+  height: 1000
+})
+```
+
+```{ojs}
+width > 700 ? svg`${barPlot}` : svg`${vertBarPlot}`
+```
+
+## What are the limitations? {
+  background-image="/assets/backgrounds/MountaintopObservatory_Natural_Day.jpg"
+  background-opacity="0.69"
+  background-color="#cccccc"}
+
+Most of the time, this is enough!
+
+I can build interactives quickly and efficiently ✅
+
+But I can't _transition_ from A to B easily.
+
+If only we had **more control** over what was drawn...
+
+# The big boss<br>[Drawing graphics directly in Quarto]{style="font-size: 65%"} {
+  background-video="/assets/backgrounds/VampireMansion_Animated_Night.mp4"
+  background-opacity="0.99"
+  background-color="#240d07"}
+
+## My wishlist {
+  background-image="/assets/backgrounds/VampireMansion_Cliff_Night.jpg"
+  background-opacity="0.99"
+  background-color="#240d07"}
+
+1. OJS's reactivity is lovely... but I want to **bypass it** sometimes
+2. I want to design graphics in the **declarative way** I do with ggplot2 and Observable Plot
+3. I want **more control** over what I draw
+
+Let's talk about these in turn!
+
+## Reactivity: everyone's doing it {
+  background-image="/assets/backgrounds/VampireMansion_Cliff_Night.jpg"
+  background-opacity="0.99"
+  background-color="#240d07"}
+
+In OJS, when you replace one thing with another, the **first thing gets destroyed**
+
+To do transitions, we need something that can **transition between the two**
+
+## Reactivity: everyone's doing it {
+  background-image="/assets/backgrounds/VampireMansion_Cliff_Night.jpg"
+  background-opacity="0.99"
+  background-color="#240d07"}
+
+But reactivity is really popular these days! All of these are reactive:
+
+:::{.has-table} 
+
+| Category | Examples                                 |
+|----------|------------------------------------------|
+| Data     | Shiny                                    |
+| App dev  | SwiftUI (iOS), Jetpack Compose (Android) |
+| Web dev  | React, Svelte                            |
+
+:::
+
+In all of these, you:
+
+- Pass data or options that might change
+- Tell it what you want to show
+- It takes care of the updates when things change
+
+## [~~Reactivity~~]{style="opacity: 0.5;"} Declarative graphics: everyone's doing them {
+  background-image="/assets/backgrounds/VampireMansion_Cliff_Night.jpg"
+  background-opacity="0.99"
+  background-color="#240d07"}
+
+Sound familiar?
+
+This is philosophically similar to **declarative graphics**: we want to focus on what we want to draw, not getting bogged down in how to do it
+
+## Is Svelte the answer? {
+  background-image="/assets/backgrounds/VampireMansion_Cliff_Night.jpg"
+  background-opacity="0.9"
+  background-color="#240d07"}
+
+Created by Rich Harris (former Guardian, New York Times graphics)
+
+I got hooked after a [**blog post**](https://connorrothschild.github.io/v4/post/svelte-and-d3) by Connor Rothschild  
+(he has an [**updated post**](https://connorrothschild.github.io/v4/viz) now!)
+
+Svelte has tools for turning data into **changing graphics**, like transitions
+
+## But web frameworks can be scary... {
+  background-image="/assets/backgrounds/VampireMansion_Cliff_Night.jpg"
+  background-opacity="0.9"
+  background-color="#240d07"}
+
+::: {.columns}
+::: {.column width="40%"}
+![["Stop doing math" meme with JavaScript](https://www.reddit.com/r/ProgrammerHumor/comments/1adzvbs/stopdoingjavascript/)](/assets/stop-doing-js-meme.jpg)
+:::
+::: {.column width="60%"}
+Most web frameworks have lovely browser sandboxes to try them out in
+
+But when you start a project for real, it gets confusing fast
+
+Files, modules, packages, configs... yuck!
+:::
+:::
+
+## Back to my wishlist {
+  background-image="/assets/backgrounds/VampireMansion_Cliff_Night.jpg"
+  background-opacity="0.99"
+  background-color="#240d07"}
+
+I want the declarative and reactive power of a web framework like Svelte
+
+But I still want to work in Quarto most of the time
+
+Adding a Svelte chart to my Quarto doc should be as easy as using Svelte in the browser sandbox
+
+## Enter Sverto {
+  background-image="/assets/backgrounds/VampireMansion_Cliff_Night.jpg"
+  background-opacity="0.9"
+  background-color="#240d07"}
+
+:::: {.columns}
+::: {.column width="30%"} 
+
+These controls are OJS...
+
+```{ojs}
+//| label: timeseries-controls
+viewof selectedCity = Inputs.select(
+  new Map([
+    ["Melbourne", "086338"],
+    ["Brisbane", "040842"]
+  ]),
+  {
+    value: "086338"
+  }
+)
+
+viewof selectedVariable = Inputs.select(
+  new Map([
+    ["Daytime", "tmax"],
+    ["Nighttime", "tmin"]
+  ]),
+  {
+    value: "tmax"
+  }
+)
+
+viewof selectedSeason = Inputs.select(
+  new Map([
+    ["Whole year", 0],
+    ["January", 1],
+    ["February", 2],
+    ["March", 3],
+    ["April", 4],
+    ["May", 5],
+    ["June", 6],
+    ["July", 7],
+    ["August", 8],
+    ["September", 9],
+    ["October", 10],
+    ["November", 11],
+    ["December", 12]
+  ]),
+  {
+    value: 0
+  }
+)
+
+viewof selectedMetric = Inputs.select(
+  new Map([
+    ["Hottest", "max"],
+    ["Average", "mean"],
+    ["Coldest", "min"],
+  ]),
+  {
+    value: "Average"
+  }
+)
+```
+
+:::
+
+::: {.column width="70%"}
+
+... but this chart is Svelte!  
+(with just a smidge of D3.js)
+
+```{ojs}
+//| label: download-filter-data
+import { aq, op } from "@uwdata/arquero"
+
+fullCity = aq.loadCSV(
+  "time-series/" + selectedVariable + "." + selectedCity + ".daily.csv")
+
+tidiedCity = fullCity
+  .rename(aq.names("date", "value"))
+  .filter(d => d.date !== null)
+  .params({ selectedSeason: selectedSeason })
+  .derive({
+    year: d => op.year(d.date),
+    month: d => op.month(d.date) + 1
+  })
+
+// filter unless "Whole year" is selected
+filteredCity = selectedSeason == 0 ?
+  tidiedCity :
+  tidiedCity.filter(d => d.month == selectedSeason)
+
+// now group by year and calculate the metrics
+allMetrics = filteredCity
+  .groupby("year")
+  .rollup({
+    min:  d => op.min(d.value),
+    mean: d => op.mean(d.value),
+    max:  d => op.max(d.value),
+  })
+
+// finally, select the year and whichever metric column is chosen by the user
+finalData = allMetrics
+  .select("year", selectedMetric)
+  .rename(aq.names("year", "value"))
+```
+
+```{ojs}
+//| label: import-chart
+timeSeriesChart = new TimeSeriesChart.default({
+  target: document.querySelector("#timeserieschart")
+})
+```
+
+:::{#timeserieschart}
+:::
+
+```{ojs}
+//| label: size-chart
+//| output: false
+timeSeriesChart.height = 400
+timeSeriesChart.width = 900
+```
+
+```{ojs}
+//| label: update-chart-data
+//| output: false
+timeSeriesChart.data = finalData.objects()
+```
+
+```{ojs}
+//| label: update-chart-colours
+//| output: false
+timeSeriesChart.colourScheme = selectedVariable == "tmax" ? "warm" : "cool"
+```
+
+:::
+::::
+
+The chart **transitions smoothly** whenever our OJS controls change!
+
+## What can Sverto do? {
+  background-image="/assets/backgrounds/VampireMansion_Cliff_Night.jpg"
+  background-opacity="0.9"
+  background-color="#240d07"}
+
+Sverto lets you **write Svelte components**, like charts and maps
+
+Then **import them into Quarto** quickly and easily
+
+And **drive them with OJS reactivity**
+
+<br>
+
+:::: {.columns .small}
+::: {.column width="33%"}
+1. Import the Svelte component
+
+```yaml
+---
+title: My Quarto doc
+filters:
+  - sverto
+sverto:
+  use:
+    - example.svelte
+---
+```
+:::
+::: {.column width="33%"}
+2. Tell Sverto where to add it
+
+````js
+```{ojs}
+myChart = new example.default({
+  target:
+    document.querySelector("#chart")
+})
+```
+
+:::{#chart}
+:::
+````
+:::
+::: {.column width="33%"}
+3. Update component with OJS
+
+```js
+// eg. filter data sent to svelte
+// by selected country
+myChart.chartData =
+  myData.filter(
+    d => d.year == selectedYear)
+```
+:::
+::::
+
+<br>
+
+Give it a try! **<https://sverto.jamesgoldie.dev>**
+
+# [It's dangerous to go alone]{style="font-size: 65%"}<br>Take these! {
+  background-video="/assets/backgrounds/DragonsHoard_Animated_Day.mp4"
+  background-opacity="0.99"
+  background-color="#443322"}
+
+## Trying out OJS in Quarto? {
+  background-image="/assets/backgrounds/DragonsHoard_Original_Day.jpg"
+  background-opacity="0.8"
+  background-color="#443322"}
+
+**Quarto docs**  
+<https://quarto.org/docs/interactive/ojs>
+
+**Observable Plot docs**  
+<https://observablehq.com/plot>
+
+**Observable Inputs docs**  
+<https://observablehq.com/documentation/inputs/overview>
+
+## Levelling up with OJS?  {
+  background-image="/assets/backgrounds/DragonsHoard_Original_Day.jpg"
+  background-opacity="0.8"
+  background-color="#443322"}
+
+**360info's OJS graphics**  
+<https://github.com/360-info>
+
+**Observable's examples**  
+<https://observablehq.com/explore#notebooks>
+
+## Ready to use Svelte in Quarto?  {
+  background-image="/assets/backgrounds/DragonsHoard_Original_Day.jpg"
+  background-opacity="0.8"
+  background-color="#443322"}
+
+**Sverto**  
+<https://sverto.jamesgoldie.dev>
+
+**Connor Rothschild: How to "Learn D3" in 2023**  
+<https://connorrothschild.github.io/v4/viz>
+
+**Matthias Stahl: Svelte + D3 training**  
+<https://youtube.com/playlist?list=PLNvnDrMLMSipfbxSp1Z4v9Ydu2ud5i9V8&si=Fu326UCzouaMz3MM>
+
+**Amelia Wattenberger: Fullstack D3 and Data Visualization**  
+<https://www.newline.co/fullstack-d3>
+
+# Questions?<br>[I'm in the Discord!]{style="font-size: 65%"} {
+  background-video="/assets/backgrounds/VillageBlacksmith_Animated_Night.mp4"
+  background-opacity="0.99"
+  background-color="#223366"}
+
+:::{.small}
+Thank you:
+
+**Posit** for accepting my talk
+
+**Andrew Bray** for letting me pinch a Closeread example
+
+**Czepuku** for letting me use their sweet backgrounds under licence
+
+Slides at **<https://positconf2024.talks.jamesgoldie.dev>**
+:::
+
+# Bonus slides {
+  background-video="/assets/backgrounds/MountaintopObservatory_Animated_Day.mp4"
+  background-opacity="0.99"
+  background-color="#888888"}
+
+## Bonus: What about D3.js? {
+  background-image="/assets/backgrounds/MountaintopObservatory_Natural_Day.jpg"
+  background-opacity="0.99"
+  background-color="#888888"}
+
+::: {.columns}
+::: {.column}
+Remember **D3.js?** We've used it before! Remember the scale functions?
+
+D3 has lots of handy utilities, but it's best known for tools that turn data into graphics:
+
+```js
+d3.select("svg")
+  // make circles for each data row
+  .selectAll("circle")
+  .data(mydata)
+  .join("circle")
+  // style them using data columns
+  .attr("cx", d => d.income)
+  .attr("cy", d => d.life_expec)
+  .attr("r", d => d.population)
+  .attr("fill", "blue")
+```
+:::
+::: {.column}
+D3 is lower level (`ggplot2` users, think `grid`)
+
+I failed to learn it for years!
+
+D3's "select" code is very imperative
+
+As [**Connor Rothschild explains**](https://connorrothschild.github.io/v4/viz), you can use D3.js tools when it's useful, but Svelte is often a better way to create graphics from data
+:::
+:::
+
+## Bonus: What about D3.js? {
+  background-image="/assets/backgrounds/MountaintopObservatory_Natural_Day.jpg"
+  background-opacity="0.99"
+  background-color="#888888"}
+
+> The differences between D3 and Svelte are equivalent to the differences between _instructions_ and _authoring_. In D3, we write instructions to tell JavaScript what to render; in Svelte, we write our output directly.
+> 
+> — Connor Rothschild, [**How to "Learn D3" in 2023**](https://connorrothschild.github.io/v4/viz)
