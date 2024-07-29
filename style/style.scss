@@ -95,17 +95,24 @@ $section-styles:
   .has-table {
     .oi-3a86ea-table {
       max-height: 100% !important;
-      overflow-x: clip;
+      padding-left: 0;
     }
 
     table {
       background: #00000033;
       border-radius: 0.5em;
+      font-size: 0.7em !important;
+      margin-top: 0.5em;
 
       thead {
         th {
           background: transparent;
         }
+      }
+
+      input[type="checkbox"] {
+        width: 0.75em;
+        height: 0.75em;
       }
     }
   }

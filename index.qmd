@@ -50,7 +50,7 @@ DATA AND DIGITAL STORYTELLING LEAD, 360INFO
 
 <br>
 
-I'm James, a **data journalist** at [**360info**](https://360info.org)
+I'm a **data journalist** at [**360info**](https://360info.org)
 
 :::{.small style="margin-left: 0.67em;"}
 We deliver verified and reliable information to as many publishing, broadcasting and civic society outlets as possible
@@ -63,9 +63,28 @@ I also used to be a climate + health researcher!
 :::
 ::::
 
+:::{style="font-size: 50%"}
+[**Follow along today**]{style="text-transform: uppercase"}
 
+Slides: **<https://positconf2024.talks.jamesgoldie.dev>**
 
-## New tools can be scary! {
+Code: **<https://github.com/jimjam-slam/talk-positconf-aug2024>**
+:::
+
+## Why I love Quarto {
+  background-image="/assets/backgrounds/WonderfulWizardWaterfall_Original_Day.jpg"
+  background-opacity="0.99"
+  background-color="#555566"}
+
+I've gone research + data science -> communication -> data journalism
+
+I've looked for tools to help bridge my existing technical skills
+
+**Quarto is a fantastic bridge**
+
+Today I want to bring you on this journey
+
+## Wait, why is it a journey? {
   background-image="/assets/backgrounds/WonderfulWizardWaterfall_Original_Day.jpg"
   background-opacity="0.99"
   background-color="#555566"}
@@ -82,19 +101,6 @@ Using D3.js to make a graphic
 Bundling JavaScript dependencies
 :::
 
-## Why I love Quarto {
-  background-image="/assets/backgrounds/WonderfulWizardWaterfall_Original_Day.jpg"
-  background-opacity="0.99"
-  background-color="#555566"}
-
-I've gone research + data science -> communication -> data journalism
-
-I've looked for tools to help bridge my existing technical skills
-
-Quarto is a fantastic bridge 
-
-Today I want to bring you on this journey
-
 # First steps<br>[Trying out OJS and Observable Plot]{style="font-size: 65%"} {#section-cream
   background-video="/assets/backgrounds/VillageBlacksmith_Animated_Day.mp4"
   background-opacity="0.99"
@@ -108,7 +114,40 @@ Today I want to bring you on this journey
 
 No need to download, add or configure anything
 
-If you have Quarto, you're ready to go!
+If you have Quarto, you're ready to go! **You can add OJS chunks to Quarto docs right now**
+
+<br>
+
+::: {.columns .small}
+::: {.column}
+Instead of...
+
+````
+Blah blah blah, anyway here's a cool chart:
+
+```{{r}}
+ggplot() +
+  aes(x, y) +
+  geom_point()
+```
+````
+:::
+::: {.column}
+... We'll use this:
+
+````
+Blah blah blah, anyway here's a cool chart:
+
+```{{ojs}}
+Plot.plot({
+  marks: [
+    // marks here...
+  ]
+})
+```
+````
+:::
+:::
 
 ## Swap Observable Plot for ggplot2 {
   background-image="/assets/backgrounds/VillageBlacksmith_Original_Day.jpg"
@@ -170,9 +209,9 @@ Here's our plot in R...
 :::{.column .small}
 
 ```{r}
-#| label: replace-plot-r
 #| output: false
-#| echo: true
+#| echo: fenced
+
 library(ggplot2)
 ggplot(aus_pops) +
   aes(x = city, y = pop) +
@@ -194,9 +233,9 @@ ggplot(aus_pops) +
 :::{.column}
 
 ```{r}
-#| label: replace-plot-r2
 #| output: true
 #| echo: false
+
 library(ggplot2)
 ggplot(aus_pops) +
   aes(x = city, y = pop) +
@@ -229,7 +268,9 @@ ggplot(aus_pops) +
 
 :::{.column .small}
 
-```js
+```{{ojs}}
+//| echo: fenced
+
 md`Population in millions`
 
 Plot.plot({
@@ -243,8 +284,7 @@ Plot.plot({
   style: {
     fontSize: 16
   },
-  marginBottom: 45,
-  title: "Population in millions"
+  marginBottom: 45
 })
 ```
 
@@ -281,7 +321,7 @@ Plot.plot({
 
 How do we load our data in?
 
-::::{.columns}
+::::{.columns .small}
 :::{.column}
 
 If it's already in R or Python, we can just use `ojs_define()`:
@@ -320,34 +360,21 @@ aus_pops =
 
 We can make more than just static plots!
 
-Observable Plot has built-in **tooltips**, and we can make individual elements accessible too:
+:::{.small}
+Observable Plot has built-in **tooltips**, and we can make individual elements accessible too
 
-```{ojs}
-//| echo: true
-//| output: false
-md`Population in millions`
-
-Plot.plot({
-  marks: [
-    Plot.barY(transpose(aus_pops), {
-      x: "city",
-      y: "pop",
-      fill: "#222222ee",
-      ariaLabel: d => d.city + ": " + d.pop + " million people"
-    }),
-    Plot.tip(transpose(aus_pops), Plot.pointerX({
-      x: "city",
-      y: "pop",
-      fill: "#333333",
-      ariaHidden: true
-    })),
-  ],
-  style: {
-    fontSize: 16
-  },
-  marginBottom: 45
-})
+```js
+Plot.tip(transpose(aus_pops), Plot.pointerX({
+  x: "city",
+  y: "pop",
+  fill: "#333333",
+  ariaHidden: true
+}))
 ```
+
+We can add this to `marks`... or we can just add `tip: true` to our other mark
+
+:::
 
 :::
 :::{.column}
@@ -375,6 +402,8 @@ barPlot = Plot.plot({
   },
   marginBottom: 45
 })
+
+barPlot
 ```
 
 :::
@@ -695,7 +724,7 @@ Here's a simple timer:
 trafficLight = {
   let i = 0;
   while (true) {
-    yield Promises.tick(3000, ++i % 2)
+    yield Promises.tick(2000, ++i % 2)
   }
 }
 trafficLight
@@ -705,7 +734,7 @@ trafficLight
 :::: {.columns .small}
 
 ::: {.column width="30%"}
-Draw text...
+Draw **text...**
 
 ```{ojs}
 //| label: traffic-statements
@@ -718,7 +747,7 @@ trafficLight ?
 
 ::: {.column width="30%"}
 
-... or graphics...
+... or **graphics...**
 
 ```{ojs}
 //| label: traffic-graphics
@@ -730,7 +759,7 @@ trafficLight ?
 :::
 
 ::: {.column width="40%"}
-... or a drawing!
+... or **a drawing...**
 
 ```{ojs}
 //| label: traffic-lights
@@ -752,32 +781,34 @@ svg`<svg style="margin-top:20px">
 
 ::::
 
- 
-
-## ... to handle statistics... {
+## ... or mixed content! {
   background-image="/assets/backgrounds/MountaintopObservatory_Natural_Day.jpg"
   background-opacity="0.69"
   background-color="#cccccc"}
 
 ::: {.columns}
-::: {.column .has-table width="35%"}
+::: {.column .has-table width="40%"}
 
 ```{ojs}
-viewof selectedCities = Inputs.table(transpose(aus_pops), {
-  required: false
-})
+//| echo: true
+viewof selectedCities = Inputs.table(
+  transpose(aus_pops),
+  { required: false })
 ```
 :::
-::: {.column width="65%"}
+::: {.column width="60%"}
 
 ```js
 selectedCities.length > 2 ?
-  somePlot :
-  someOtherThing
+  svg`${selectedCityPlot}` :
+  md`╳ Not enough cities selected`
 ```
- 
+
 ```{ojs}
+//| label: selected-city-plot
 selectedCities.length > 2 ?
+  // NOTE - i've actually just inlined the plot since
+  // it's using different data
   Plot.plot({
     marks: [
       Plot.barY(selectedCities, {
