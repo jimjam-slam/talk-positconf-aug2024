@@ -1,4 +1,6 @@
 ---
+pagetitle: Your journey from data science to animated web graphics
+description: "A posit::conf(2024) talk by James Goldie"
 knitr:
   opts_chunk: 
     dev.args:
@@ -1258,7 +1260,7 @@ Thank you:
 
 **Andrew Bray** for letting me pinch a Closeread example
 
-[**Czepuku**](http://czepeku.com) for letting me use their sweet backgrounds under licence
+[**Czepeku**](http://czepeku.com) for letting me use their sweet backgrounds under licence
 
 Slides at **<https://positconf2024.talks.jamesgoldie.dev>**
 :::
