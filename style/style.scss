@@ -48,17 +48,6 @@ $font-family-sans-serif: "Inter", Helvetica, sans-serif !default;
 $font-family-monospace: "JetBrains Mono", monospace !default;
 $presentation-heading-font: "DM Serif Text", serif !default;
 
-$section-styles:
-  // name, color1, color2, body-color, bg-color, shadow-color
-  "aqua"    "#00aadd" "#66dd00" "#16365a",
-  "sunset"  "#c21500" "#ffc500" "#4b1625",
-  "carbon"  "#222222" "#444444" "#222222",
-  "moss"    "#134E5E" "#71B280" "#0b2c36" "#dae1eb" "#361801",
-  "indigo"  "#4776E6" "#8E54E9" "#152447",
-  "cream"   "#ffffff" "#ffffff" "#ffffff" "#2e1901" "#000000",
-  "silver"  "#ffffff" "#ffffff" "#ffffff" "slategrey" "#000000"
-  ;
-
 /*-- scss:rules --*/
 .reveal {
 

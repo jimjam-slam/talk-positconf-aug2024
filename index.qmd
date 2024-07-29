@@ -24,10 +24,10 @@ sverto:
     - TimeSeriesChart.svelte
 ---
 
-# Your journey<br>[from data science to animated web graphics]{style="font-size: 65%"} {#section-silver
-  background-video="/assets/backgrounds/WonderfulWizardWaterfall_Animated_Day.mp4"
-  background-opacity="0.8"
-  background-color="#223344"
+# Your journey<br>[from data science to animated web graphics]{style="font-size: 65%"} {
+  background-video="/assets/backgrounds/FloodedFeyRuins_Animated_Day.mp4"
+  background-opacity="0.9"
+  background-color="#260b00"
   background-video-loop="true"}
  
 :::{.title-content .small}
@@ -38,9 +38,9 @@ DATA AND DIGITAL STORYTELLING LEAD, 360INFO
 
 
 ## Hello! {
-  background-image="/assets/backgrounds/WonderfulWizardWaterfall_Original_Day.jpg"
+  background-image="/assets/backgrounds/FloodedFeyRuins_Original_Day.jpg"
   background-opacity="0.99"
-  background-color="#555566"}
+  background-color="#822401"}
 
 :::: {.columns}
 ::: {.column}
@@ -69,37 +69,47 @@ I also used to be a climate + health researcher!
 Slides: **<https://positconf2024.talks.jamesgoldie.dev>**
 
 Code: **<https://github.com/jimjam-slam/talk-positconf-aug2024>**
+
+I'm in the Discord too!
 :::
 
 ## Why I love Quarto {
-  background-image="/assets/backgrounds/WonderfulWizardWaterfall_Original_Day.jpg"
+  background-image="/assets/backgrounds/FloodedFeyRuins_Original_Day.jpg"
   background-opacity="0.99"
-  background-color="#555566"}
+  background-color="#822401"}
 
-I've gone research + data science -> communication -> data journalism
+My career: research + data science -> communication -> data journalism
+
+<br>
 
 I've looked for tools to help bridge my existing technical skills
 
 **Quarto is a fantastic bridge**
 
-Today I want to bring you on this journey
+Today I want to bring you on this journey!
 
 ## Wait, why is it a journey? {
-  background-image="/assets/backgrounds/WonderfulWizardWaterfall_Original_Day.jpg"
+  background-image="/assets/backgrounds/FloodedFeyRuins_Original_Day.jpg"
   background-opacity="0.99"
-  background-color="#555566"}
+  background-color="#822401"}
 
-All of these have felt scary to me at some point
+All of these have felt scary to me at some point:
+
+<br>
 
 :::{.small}
-Adding a stylesheet to a Quarto or RMarkdown
+Adding a[(n S)]{style="opacity: 0.75"}CSS stylesheet to a Quarto or RMarkdown doc
 
 Adding JavaScript to a Shiny app
 
 Using D3.js to make a graphic
 
-Bundling JavaScript dependencies
+Build tools for JavaScript frameworks
 :::
+
+<br>
+
+But Quarto has **everything you need** to start learning!
 
 # First steps<br>[Trying out OJS and Observable Plot]{style="font-size: 65%"} {#section-cream
   background-video="/assets/backgrounds/VillageBlacksmith_Animated_Day.mp4"
@@ -382,7 +392,7 @@ We can add this to `marks`... or we can just add `tip: true` to our other mark
 ```{ojs}
 md`Population in millions`
 
-barPlot = Plot.plot({
+Plot.plot({
   marks: [
     Plot.barY(transpose(aus_pops), {
       x: "city",
@@ -402,8 +412,6 @@ barPlot = Plot.plot({
   },
   marginBottom: 45
 })
-
-barPlot
 ```
 
 :::
@@ -849,6 +857,32 @@ md`Window width is ${width} pixels`
 
 ```{ojs}
 //| output: false
+horizBarPlot = Plot.plot({
+  marks: [
+    Plot.barY(transpose(aus_pops), {
+      x: "city",
+      y: "pop",
+      fill: "#222222ee",
+      ariaLabel: d => d.city + ": " + d.pop + " million people"
+    }),
+    Plot.tip(transpose(aus_pops), Plot.pointerX({
+      x: "city",
+      y: "pop",
+      fill: "#bbbbbb",
+      ariaHidden: true
+    })),
+  ],
+  style: {
+    fontSize: 16
+  },
+  marginBottom: 45,
+  height: 275,
+  width: 1200
+})
+```
+
+```{ojs}
+//| output: false
 vertBarPlot = Plot.plot({
   marks: [
     Plot.barX(transpose(aus_pops), {
@@ -860,7 +894,7 @@ vertBarPlot = Plot.plot({
     Plot.tip(transpose(aus_pops), Plot.pointerY({
       x: "pop",
       y: "city",
-      fill: "#333333",
+      fill: "#bbbbbb",
       ariaHidden: true
     })),
   ],
@@ -874,7 +908,10 @@ vertBarPlot = Plot.plot({
 ```
 
 ```{ojs}
-width > 700 ? svg`${barPlot}` : svg`${vertBarPlot}`
+//| echo: true
+width > 700 ?
+  svg`${horizBarPlot}` :
+  svg`${vertBarPlot}`
 ```
 
 ## What are the limitations? {
@@ -888,39 +925,36 @@ I can build interactives quickly and efficiently ✅
 
 But I can't _transition_ from A to B easily.
 
-If only we had **more control** over what was drawn...
+<br>
 
-# The big boss<br>[Drawing graphics directly in Quarto]{style="font-size: 65%"} {
+In OJS, when you replace one thing with another, the **first thing gets destroyed**
+
+I need something that is aware of the start and the finish
+
+## My wishlist {
+  background-image="/assets/backgrounds/MountaintopObservatory_Natural_Day.jpg"
+  background-opacity="0.69"
+  background-color="#cccccc"}
+
+1. OJS's **reactivity** is lovely... but I want to **bypass it** sometimes
+2. I want to design graphics in the **declarative way** I do with ggplot2 and Observable Plot
+3. I want **more control** over what I draw
+
+# Sverto<br>[Using Svelte in Quarto]{style="font-size: 65%"} {
   background-video="/assets/backgrounds/VampireMansion_Animated_Night.mp4"
   background-opacity="0.99"
   background-color="#240d07"}
 
-## My wishlist {
-  background-image="/assets/backgrounds/VampireMansion_Cliff_Night.jpg"
-  background-opacity="0.99"
-  background-color="#240d07"}
-
-1. OJS's reactivity is lovely... but I want to **bypass it** sometimes
-2. I want to design graphics in the **declarative way** I do with ggplot2 and Observable Plot
-3. I want **more control** over what I draw
-
-Let's talk about these in turn!
-
 ## Reactivity: everyone's doing it {
   background-image="/assets/backgrounds/VampireMansion_Cliff_Night.jpg"
   background-opacity="0.99"
   background-color="#240d07"}
 
-In OJS, when you replace one thing with another, the **first thing gets destroyed**
+:::: {.columns}
+::: {.column}
+Reactivity is really popular these days! All of these are reactive:
 
-To do transitions, we need something that can **transition between the two**
-
-## Reactivity: everyone's doing it {
-  background-image="/assets/backgrounds/VampireMansion_Cliff_Night.jpg"
-  background-opacity="0.99"
-  background-color="#240d07"}
-
-But reactivity is really popular these days! All of these are reactive:
+<br>
 
 :::{.has-table} 
 
@@ -928,17 +962,30 @@ But reactivity is really popular these days! All of these are reactive:
 |----------|------------------------------------------|
 | Data     | Shiny                                    |
 | App dev  | SwiftUI (iOS), Jetpack Compose (Android) |
-| Web dev  | React, Svelte                            |
+| Web dev  | React, Svelte                        |
 
 :::
-
+:::
+::: {.column}
 In all of these, you:
 
-- Pass data or options that might change
-- Tell it what you want to show
-- It takes care of the updates when things change
+:::{.small}
+Pass data or options that might change
 
-## [~~Reactivity~~]{style="opacity: 0.5;"} Declarative graphics: everyone's doing them {
+Tell it what you want to show
+
+It takes care of the updates when things change
+:::
+
+<br>
+
+I particularly like **Svelte**
+
+[It has tools for turning data into **changing graphics**, like transitions]{.small}
+:::
+::::
+
+## [~~Reactivity~~]{.small style="opacity: 0.5;"}<br>Declarative graphics: everyone's doing them {
   background-image="/assets/backgrounds/VampireMansion_Cliff_Night.jpg"
   background-opacity="0.99"
   background-color="#240d07"}
@@ -946,47 +993,6 @@ In all of these, you:
 Sound familiar?
 
 This is philosophically similar to **declarative graphics**: we want to focus on what we want to draw, not getting bogged down in how to do it
-
-## Is Svelte the answer? {
-  background-image="/assets/backgrounds/VampireMansion_Cliff_Night.jpg"
-  background-opacity="0.9"
-  background-color="#240d07"}
-
-Created by Rich Harris (former Guardian, New York Times graphics)
-
-I got hooked after a [**blog post**](https://connorrothschild.github.io/v4/post/svelte-and-d3) by Connor Rothschild  
-(he has an [**updated post**](https://connorrothschild.github.io/v4/viz) now!)
-
-Svelte has tools for turning data into **changing graphics**, like transitions
-
-## But web frameworks can be scary... {
-  background-image="/assets/backgrounds/VampireMansion_Cliff_Night.jpg"
-  background-opacity="0.9"
-  background-color="#240d07"}
-
-::: {.columns}
-::: {.column width="40%"}
-![["Stop doing math" meme with JavaScript](https://www.reddit.com/r/ProgrammerHumor/comments/1adzvbs/stopdoingjavascript/)](/assets/stop-doing-js-meme.jpg)
-:::
-::: {.column width="60%"}
-Most web frameworks have lovely browser sandboxes to try them out in
-
-But when you start a project for real, it gets confusing fast
-
-Files, modules, packages, configs... yuck!
-:::
-:::
-
-## Back to my wishlist {
-  background-image="/assets/backgrounds/VampireMansion_Cliff_Night.jpg"
-  background-opacity="0.99"
-  background-color="#240d07"}
-
-I want the declarative and reactive power of a web framework like Svelte
-
-But I still want to work in Quarto most of the time
-
-Adding a Svelte chart to my Quarto doc should be as easy as using Svelte in the browser sandbox
 
 ## Enter Sverto {
   background-image="/assets/backgrounds/VampireMansion_Cliff_Night.jpg"
@@ -1135,6 +1141,7 @@ The chart **transitions smoothly** whenever our OJS controls change!
   background-opacity="0.9"
   background-color="#240d07"}
 
+:::{.small}
 Sverto lets you **write Svelte components**, like charts and maps
 
 Then **import them into Quarto** quickly and easily
@@ -1142,6 +1149,7 @@ Then **import them into Quarto** quickly and easily
 And **drive them with OJS reactivity**
 
 <br>
+:::
 
 :::: {.columns .small}
 ::: {.column width="33%"}
@@ -1165,11 +1173,11 @@ sverto:
 ```{ojs}
 myChart = new example.default({
   target:
-    document.querySelector("#chart")
+    document.querySelector("#here")
 })
 ```
 
-:::{#chart}
+:::{#here}
 :::
 ````
 :::
@@ -1201,13 +1209,13 @@ Give it a try! **<https://sverto.jamesgoldie.dev>**
   background-color="#443322"}
 
 **Quarto docs**  
-<https://quarto.org/docs/interactive/ojs>
+[<https://quarto.org/docs/interactive/ojs>]{.small}
 
 **Observable Plot docs**  
-<https://observablehq.com/plot>
+[<https://observablehq.com/plot>]{.small}
 
 **Observable Inputs docs**  
-<https://observablehq.com/documentation/inputs/overview>
+[<https://observablehq.com/documentation/inputs/overview>]{.small}
 
 ## Levelling up with OJS?  {
   background-image="/assets/backgrounds/DragonsHoard_Original_Day.jpg"
@@ -1215,10 +1223,10 @@ Give it a try! **<https://sverto.jamesgoldie.dev>**
   background-color="#443322"}
 
 **360info's OJS graphics**  
-<https://github.com/360-info>
+[<https://github.com/360-info>]{.small}
 
 **Observable's examples**  
-<https://observablehq.com/explore#notebooks>
+[<https://observablehq.com/explore#notebooks>]{.small}
 
 ## Ready to use Svelte in Quarto?  {
   background-image="/assets/backgrounds/DragonsHoard_Original_Day.jpg"
@@ -1226,40 +1234,42 @@ Give it a try! **<https://sverto.jamesgoldie.dev>**
   background-color="#443322"}
 
 **Sverto**  
-<https://sverto.jamesgoldie.dev>
+[<https://sverto.jamesgoldie.dev>]{.small}
 
 **Connor Rothschild: How to "Learn D3" in 2023**  
-<https://connorrothschild.github.io/v4/viz>
+[<https://connorrothschild.github.io/v4/viz>]{.small}
 
 **Matthias Stahl: Svelte + D3 training**  
-<https://youtube.com/playlist?list=PLNvnDrMLMSipfbxSp1Z4v9Ydu2ud5i9V8&si=Fu326UCzouaMz3MM>
+[<https://youtube.com/playlist?list=PLNvnDrMLMSipfbxSp1Z4v9Ydu2ud5i9V8&si=Fu326UCzouaMz3MM>]{.small}
 
 **Amelia Wattenberger: Fullstack D3 and Data Visualization**  
-<https://www.newline.co/fullstack-d3>
+[<https://www.newline.co/fullstack-d3>]{.small}
 
 # Questions?<br>[I'm in the Discord!]{style="font-size: 65%"} {
   background-video="/assets/backgrounds/VillageBlacksmith_Animated_Night.mp4"
   background-opacity="0.99"
   background-color="#223366"}
 
-:::{.small}
+::::{.small}
 Thank you:
 
-**Posit** for accepting my talk
+:::{style="font-size: 75%"}
+**Posit** for accepting my talk and **Articulation** for amazing speaker training
 
 **Andrew Bray** for letting me pinch a Closeread example
 
-**Czepuku** for letting me use their sweet backgrounds under licence
+[**Czepuku**](http://czepeku.com) for letting me use their sweet backgrounds under licence
 
 Slides at **<https://positconf2024.talks.jamesgoldie.dev>**
 :::
+::::
 
 # Bonus slides {
   background-video="/assets/backgrounds/MountaintopObservatory_Animated_Day.mp4"
   background-opacity="0.99"
   background-color="#888888"}
 
-## Bonus: What about D3.js? {
+## What about D3.js? {
   background-image="/assets/backgrounds/MountaintopObservatory_Natural_Day.jpg"
   background-opacity="0.99"
   background-color="#888888"}
@@ -1294,7 +1304,7 @@ As [**Connor Rothschild explains**](https://connorrothschild.github.io/v4/viz), 
 :::
 :::
 
-## Bonus: What about D3.js? {
+## What about D3.js? {
   background-image="/assets/backgrounds/MountaintopObservatory_Natural_Day.jpg"
   background-opacity="0.99"
   background-color="#888888"}
@@ -1302,3 +1312,36 @@ As [**Connor Rothschild explains**](https://connorrothschild.github.io/v4/viz), 
 > The differences between D3 and Svelte are equivalent to the differences between _instructions_ and _authoring_. In D3, we write instructions to tell JavaScript what to render; in Svelte, we write our output directly.
 > 
 > — Connor Rothschild, [**How to "Learn D3" in 2023**](https://connorrothschild.github.io/v4/viz)
+
+## But web frameworks can be scary... {
+  background-image="/assets/backgrounds/MountaintopObservatory_Natural_Day.jpg"
+  background-opacity="0.99"
+  background-color="#888888"}
+
+::: {.columns}
+::: {.column width="40%"}
+Most web frameworks have **lovely browser sandboxes** to try them out in...
+:::
+::: {.column width="60%"}
+![](/assets/svelte-sandbox.png){alt="Screenshot of Svelte.dev browser sandbox"}
+:::
+:::
+
+## But web frameworks can be scary... {
+  background-image="/assets/backgrounds/MountaintopObservatory_Natural_Day.jpg"
+  background-opacity="0.99"
+  background-color="#888888"}
+
+::: {.columns}
+::: {.column width="60%"}
+But when you start a project for real, it gets confusing fast!
+
+I designed Sverto with **sensible defaults for Quarto users**
+:::
+::: {.column width="40%"}
+![](/assets/stop-doing-js-meme.jpg){alt="'Stop doing math' meme with JavaScript"} [Reddit]((https://www.reddit.com/r/ProgrammerHumor/comments/1adzvbs/stopdoingjavascript))
+:::
+:::
+
+
+
